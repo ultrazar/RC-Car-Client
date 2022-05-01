@@ -1,0 +1,277 @@
+[gd_scene load_steps=19 format=2]
+
+[ext_resource path="res://Sprites/wheel.jpg" type="Texture" id=1]
+[ext_resource path="res://Sprites/wood.jpg" type="Texture" id=2]
+[ext_resource path="res://Sprites/ground.jpg" type="Texture" id=3]
+[ext_resource path="res://Simulation.gd" type="Script" id=4]
+[ext_resource path="res://Theme/kenneyUI-blue.tres" type="Theme" id=5]
+[ext_resource path="res://Theme/kenneyUI-green.tres" type="Theme" id=6]
+[ext_resource path="res://Sprites/circle.png" type="Texture" id=7]
+[ext_resource path="res://Client.gd" type="Script" id=8]
+
+[sub_resource type="SpatialMaterial" id=1]
+albedo_texture = ExtResource( 2 )
+
+[sub_resource type="CubeMesh" id=2]
+material = SubResource( 1 )
+size = Vector3( 5.109, 0.2, 2.849 )
+
+[sub_resource type="SpatialMaterial" id=3]
+albedo_color = Color( 0.121569, 0.121569, 0.121569, 1 )
+
+[sub_resource type="CylinderMesh" id=4]
+material = SubResource( 3 )
+top_radius = 0.7
+bottom_radius = 0.7
+height = 0.4
+
+[sub_resource type="Shader" id=5]
+code = "shader_type spatial;
+
+uniform sampler2D image;
+uniform vec2 offset;
+uniform float scale;
+
+void fragment() {
+	ALBEDO = texture(image,UV * scale + offset).xyz;
+	if (ALBEDO.b > 0.6) {
+		ALPHA = 0.0;
+	}
+	
+}"
+
+[sub_resource type="ShaderMaterial" id=6]
+shader = SubResource( 5 )
+shader_param/offset = null
+shader_param/scale = 1.0
+shader_param/image = ExtResource( 1 )
+
+[sub_resource type="QuadMesh" id=7]
+material = SubResource( 6 )
+
+[sub_resource type="Shader" id=8]
+code = "shader_type spatial;
+
+uniform sampler2D image;
+uniform vec2 offset;
+uniform float scale;
+
+void fragment() {
+	ALBEDO = texture(image,UV * scale + offset).xyz;
+	
+}"
+
+[sub_resource type="ShaderMaterial" id=9]
+shader = SubResource( 8 )
+shader_param/offset = Vector2( 0.767, 0 )
+shader_param/scale = 10.0
+shader_param/image = ExtResource( 3 )
+
+[sub_resource type="QuadMesh" id=10]
+material = SubResource( 9 )
+size = Vector2( 100, 100 )
+
+[node name="Node2D" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+theme = ExtResource( 5 )
+script = ExtResource( 8 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Viewport" type="ViewportContainer" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+stretch = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Map" type="Spatial" parent="Viewport"]
+script = ExtResource( 4 )
+
+[node name="CameraPot" type="Spatial" parent="Viewport/Map"]
+
+[node name="Camera" type="Camera" parent="Viewport/Map/CameraPot"]
+transform = Transform( 0.278186, 0.612082, -0.740249, 0, 0.770669, 0.637236, 0.960527, -0.17727, 0.21439, -6.865, 5.185, 2.28 )
+keep_aspect = 0
+fov = 65.9
+
+[node name="Car" type="Spatial" parent="Viewport/Map"]
+
+[node name="Wood" type="MeshInstance" parent="Viewport/Map/Car"]
+mesh = SubResource( 2 )
+material/0 = null
+
+[node name="wheel" type="MeshInstance" parent="Viewport/Map/Car"]
+transform = Transform( 1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, -1.5, 0, 1.6 )
+mesh = SubResource( 4 )
+material/0 = null
+
+[node name="s" type="MeshInstance" parent="Viewport/Map/Car/wheel"]
+transform = Transform( 1.7, 0, 0, 0, -7.43094e-08, -1.1, 0, 1.7, -4.80825e-08, -0.014237, -0.21, 0 )
+mesh = SubResource( 7 )
+material/0 = null
+
+[node name="wheel2" type="MeshInstance" parent="Viewport/Map/Car"]
+transform = Transform( 1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 1.5, 0, 1.6 )
+mesh = SubResource( 4 )
+material/0 = null
+
+[node name="s" type="MeshInstance" parent="Viewport/Map/Car/wheel2"]
+transform = Transform( 1.7, 0, 0, 0, -7.43094e-08, -1.1, 0, 1.7, -4.80825e-08, -0.014237, -0.21, 5.72177e-09 )
+mesh = SubResource( 7 )
+material/0 = null
+
+[node name="wheel3" type="MeshInstance" parent="Viewport/Map/Car"]
+transform = Transform( 1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, -1.5, 0, -1.6 )
+mesh = SubResource( 4 )
+material/0 = null
+
+[node name="s" type="MeshInstance" parent="Viewport/Map/Car/wheel3"]
+transform = Transform( 1.7, 0, 0, 0, -7.43094e-08, 1.1, 0, -1.7, -4.80825e-08, 0, 0.21, 0 )
+mesh = SubResource( 7 )
+material/0 = null
+
+[node name="wheel4" type="MeshInstance" parent="Viewport/Map/Car"]
+transform = Transform( 1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 1.5, 0, -1.6 )
+mesh = SubResource( 4 )
+material/0 = null
+
+[node name="s" type="MeshInstance" parent="Viewport/Map/Car/wheel4"]
+transform = Transform( 1.6664, -0.336308, -9.51209e-09, 0, -7.43094e-08, 1.1, -0.336308, -1.6664, -4.71322e-08, 0, 0.21, 0 )
+mesh = SubResource( 7 )
+material/0 = null
+
+[node name="DirectionalLight" type="DirectionalLight" parent="Viewport/Map"]
+transform = Transform( -0.0475649, -0.778473, 0.625873, -0.0589921, 0.627678, 0.776235, -0.997125, 0, -0.0757792, 0, 1.9537, 0 )
+light_energy = 0.247
+shadow_enabled = true
+
+[node name="Ground" type="MeshInstance" parent="Viewport/Map"]
+transform = Transform( 1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 1, -0.717, 0 )
+mesh = SubResource( 10 )
+material/0 = null
+
+[node name="Panel" type="Panel" parent="."]
+self_modulate = Color( 1, 1, 1, 0.54902 )
+margin_left = 15.0
+margin_top = 10.0
+margin_right = 317.0
+margin_bottom = 157.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Button" type="Button" parent="Panel"]
+margin_left = 72.0
+margin_top = 10.0
+margin_right = 197.324
+margin_bottom = 52.251
+theme = ExtResource( 6 )
+text = "Conectar"
+
+[node name="Label" type="Label" parent="Panel"]
+modulate = Color( 0.254902, 1, 0.247059, 1 )
+anchor_left = 0.031
+anchor_top = 0.103
+anchor_right = 0.031
+anchor_bottom = 0.103
+margin_left = -4.269
+margin_top = 49.082
+margin_right = 286.731
+margin_bottom = 67.082
+custom_colors/font_color = Color( 1, 1, 1, 1 )
+text = "Estado: Conectado"
+align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="LineEdit" type="LineEdit" parent="Panel"]
+margin_left = 11.0
+margin_top = 94.0
+margin_right = 287.0
+margin_bottom = 133.434
+text = "192.168.4.1"
+align = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Inputs" type="Panel" parent="."]
+self_modulate = Color( 1, 1, 1, 0.352941 )
+margin_left = 21.0
+margin_top = 368.0
+margin_right = 400.0
+margin_bottom = 597.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="L" type="VSlider" parent="Inputs"]
+margin_left = 27.0
+margin_top = 18.0
+margin_right = 100.0
+margin_bottom = 138.0
+min_value = -1.0
+max_value = 1.0
+step = 0.01
+value = -0.17
+scrollable = false
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="R" type="VSlider" parent="Inputs"]
+margin_left = 120.0
+margin_top = 17.0
+margin_right = 193.0
+margin_bottom = 137.0
+min_value = -1.0
+max_value = 1.0
+step = 0.01
+value = 0.5
+scrollable = false
+
+[node name="Panel" type="Panel" parent="Inputs"]
+margin_left = 216.0
+margin_top = 12.0
+margin_right = 366.0
+margin_bottom = 162.0
+
+[node name="Pointer" type="Control" parent="Inputs/Panel"]
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Circle" type="TextureRect" parent="Inputs/Panel/Pointer"]
+margin_left = -10.0
+margin_top = -10.0
+margin_right = 10.0
+margin_bottom = 10.0
+texture = ExtResource( 7 )
+expand = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Automatic" type="CheckButton" parent="."]
+margin_left = 34.0
+margin_top = 524.0
+margin_right = 231.0
+margin_bottom = 584.251
+pressed = true
+text = "Automatico"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Updater" type="Timer" parent="."]
+wait_time = 0.2
+autostart = true
+
+[connection signal="pressed" from="Panel/Button" to="." method="_on_Button_pressed"]
+[connection signal="timeout" from="Updater" to="." method="_on_Updater_timeout"]
